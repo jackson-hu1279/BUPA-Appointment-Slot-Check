@@ -27,4 +27,10 @@ def check_available_dates(custom_cookies, booking_url):
             print(date)
 
 
-check_available_dates(custom_cookies, booking_url)
+while True:
+    print("\n==================================\n")
+    print("Current Time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+    # print("Current Time:", time.strftime("%b %d %Y %H:%M:%S", time.localtime()))
+
+    
+    time.sleep(random.randint(3, 6))
