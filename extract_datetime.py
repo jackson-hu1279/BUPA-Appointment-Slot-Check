@@ -20,22 +20,33 @@ def check_available_dates(custom_cookies, booking_url):
     response = requests.get(url=booking_url, cookies=custom_cookies)
 
     available_dates = re.search(r'var gAvailDates = \[(.*)\];', response.text).group(1)
-    # print("Extracted HTML var:", available_dates)
-
     date_lst = re.findall(r'new Date\((.*?)\)', available_dates)
+    date_lst = [get_formatted_date(x) for x in date_lst]
+
     if date_lst:
         print("Available Dates:")
         for date in date_lst:
             print(date)
 
         am_time_list, pm_time_list = extract_first_day_times(response.text)
-        print("\nAvailable Times for", date_lst[0])
+        print("\nAvailable Time Slots for", date_lst[0])
         print("\nMorning Times:")
         for am_time in am_time_list:
             print(am_time)
         print("\nAfternoon Times:")
         for pm_time in pm_time_list:
             print(pm_time)
+
+def get_formatted_date(date):
+    day = int(date.split(',')[2])
+    month = int(date.split(',')[1])
+    year = int(date.split(',')[0])
+
+    current_month = month + 1
+    if current_month < 10:
+        current_month = '0' + str(current_month)
+    date_str = f"{year}-{current_month}-{day}"
+    return date_str
 
 
 def extract_first_day_times(html_content):
@@ -61,7 +72,6 @@ def extract_first_day_times(html_content):
 while True:
     print("\n==================================\n")
     print("Current Time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-    # print("Current Time:", time.strftime("%b %d %Y %H:%M:%S", time.localtime()))
 
     check_available_dates(custom_cookies, booking_url)
     time.sleep(random.randint(10, 30))
