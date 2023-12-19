@@ -24,6 +24,7 @@ def check_available_dates(custom_cookies, booking_url):
     date_lst = re.findall(r'new Date\((.*?)\)', available_dates)
     date_lst = [get_formatted_date(x) for x in date_lst]
 
+    # Find available dates
     if date_lst:
         print("Available Dates:")
         for date in date_lst:
@@ -31,12 +32,16 @@ def check_available_dates(custom_cookies, booking_url):
 
         # Extract time slots
         am_time_list, pm_time_list = extract_first_day_times(response.text)
-        print("\nAvailable Time Slots for:", date_lst[0])
+        print("\nAvailable Time Slots For:", date_lst[0])
 
         # Print in two columns
         print('{:15s} {:s}'.format("Morning:", "Afternoon:"))
         for line in itertools.zip_longest(am_time_list, pm_time_list, fillvalue=' '):
             print('{:15s} {:s}'.format(line[0], line[1]))
+    
+    # No available dates
+    else:
+        print("There are no available appointments at this time. \nPlease try another clinic or come back later.")
 
 def get_formatted_date(date):
     day = int(date.split(',')[2])
