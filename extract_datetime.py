@@ -1,8 +1,9 @@
 import os
-import requests
+import itertools
 import re
 import random
 import time
+import requests
 from bs4 import BeautifulSoup
 
 custom_cookies = {}
@@ -28,14 +29,14 @@ def check_available_dates(custom_cookies, booking_url):
         for date in date_lst:
             print(date)
 
+        # Extract time slots
         am_time_list, pm_time_list = extract_first_day_times(response.text)
-        print("\nAvailable Time Slots for", date_lst[0])
-        print("\nMorning Times:")
-        for am_time in am_time_list:
-            print(am_time)
-        print("\nAfternoon Times:")
-        for pm_time in pm_time_list:
-            print(pm_time)
+        print("\nAvailable Time Slots for:", date_lst[0])
+
+        # Print in two columns
+        print('{:15s} {:s}'.format("Morning:", "Afternoon:"))
+        for line in itertools.zip_longest(am_time_list, pm_time_list, fillvalue=' '):
+            print('{:15s} {:s}'.format(line[0], line[1]))
 
 def get_formatted_date(date):
     day = int(date.split(',')[2])
