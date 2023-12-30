@@ -45,6 +45,14 @@ python extract_datetime.py -s 2024-01-28 -e 2024-02-05
     - Solution:
 
         Check cookie value pairs are correctly saved in `.env` file and activated by `source .env`
+        
+        ```
+        # Sample .env file
+        export ASPXAUTH='xxxxx'
+        export ASPNET_SessionId='xxxxx'
+        export AWSALB='xxxxx'
+        ...
+        ```
 2. Failed to parse dates.
     - Error message:
         ```
