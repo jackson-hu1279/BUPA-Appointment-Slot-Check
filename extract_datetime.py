@@ -94,12 +94,18 @@ def extract_first_day_times(html_content):
 
     return am_time_list, pm_time_list
 
-while True:
-    print("\n==================================\n")
-    print("Current Time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+# Main loop to perform recursive checking
+def main():
+    while True:
+        print("\n==================================\n")
+        print("Current Time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 
-    check_available_dates(custom_cookies, booking_url)
-    if found:
-        song = AudioSegment.from_mp3("alarm.mp3")
-        play(song)
-    time.sleep(random.randint(5, 20))
+        check_available_dates(custom_cookies, booking_url)
+        if found:
+            song = AudioSegment.from_mp3("alarm.mp3")
+            play(song)
+        time.sleep(random.randint(5, 20))
+
+
+if __name__ == "__main__":
+    main()
