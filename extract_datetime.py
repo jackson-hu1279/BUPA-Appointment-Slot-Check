@@ -5,6 +5,8 @@ import random
 import time
 import requests
 from bs4 import BeautifulSoup
+from pydub import AudioSegment
+from pydub.playback import play
 
 custom_cookies = {}
 custom_cookies['.ASPXAUTH'] = os.environ.get('ASPXAUTH', None)
@@ -16,6 +18,8 @@ custom_cookies['lpTestCookie1702961817385'] = os.environ.get('lpTestCookie170296
 
 
 booking_url = "https://bmvs.onlineappointmentscheduling.net.au/oasis/AppointmentTime.aspx"
+
+found = False
 
 def check_available_dates(custom_cookies, booking_url):
     response = requests.get(url=booking_url, cookies=custom_cookies)
@@ -47,6 +51,11 @@ def get_formatted_date(date):
     day = int(date.split(',')[2])
     month = int(date.split(',')[1])
     year = int(date.split(',')[0])
+
+    # Simple date condition check
+    if 5 <= day <= 8 :
+        global found
+        found = True
 
     current_month = month + 1
     if current_month < 10:
@@ -80,4 +89,7 @@ while True:
     print("Current Time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 
     check_available_dates(custom_cookies, booking_url)
-    time.sleep(random.randint(10, 30))
+    if found:
+        song = AudioSegment.from_mp3("alarm.mp3")
+        play(song)
+    time.sleep(random.randint(5, 20))
