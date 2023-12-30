@@ -24,14 +24,12 @@ custom_cookies = {}
 custom_cookies['.ASPXAUTH'] = os.environ.get('ASPXAUTH', None)
 custom_cookies['ASP.NET_SessionId'] = os.environ.get('ASPNET_SessionId', None)
 custom_cookies['AWSALB'] = os.environ.get('AWSALB', None)
-custom_cookies['AWSALBCORS'] = os.environ.get('AWSALBCORS', None)
-custom_cookies['VisaBookingType'] = os.environ.get('VisaBookingType', None)
-custom_cookies['lpTestCookie1702961817385'] = os.environ.get('lpTestCookie1702961817385', None)
-
+custom_cookies['AWSALBCORS'] = custom_cookies['AWSALB']
+custom_cookies['VisaBookingType'] = 'AU'
 
 booking_url = "https://bmvs.onlineappointmentscheduling.net.au/oasis/AppointmentTime.aspx"
-
 found = False
+
 
 def check_available_dates(custom_cookies, booking_url):
     response = requests.get(url=booking_url, cookies=custom_cookies)
