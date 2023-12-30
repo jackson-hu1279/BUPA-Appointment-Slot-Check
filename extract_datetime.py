@@ -8,6 +8,18 @@ from bs4 import BeautifulSoup
 from pydub import AudioSegment
 from pydub.playback import play
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
 custom_cookies = {}
 custom_cookies['.ASPXAUTH'] = os.environ.get('ASPXAUTH', None)
 custom_cookies['ASP.NET_SessionId'] = os.environ.get('ASPNET_SessionId', None)
@@ -36,7 +48,7 @@ def check_available_dates(custom_cookies, booking_url):
 
         # Extract time slots
         am_time_list, pm_time_list = extract_first_day_times(response.text)
-        print("\nAvailable Time Slots For:", date_lst[0])
+        print("\nAvailable Time Slots For: " + color.BOLD + date_lst[0] + color.END)
 
         # Print in two columns
         print('{:15s} {:s}'.format("Morning:", "Afternoon:"))
