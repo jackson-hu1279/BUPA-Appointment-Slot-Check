@@ -12,10 +12,9 @@ This project includes simple Python scripts used to automatically check [Bupa ap
 3. Try to make a new appointment on [Bupa](https://bmvs.onlineappointmentscheduling.net.au/oasis/) in your browser
 4. Check cookies saved for the domain `bmvs.onlineappointmentscheduling.net.au`
 5. Save the cookies as key-value pairs into a `.env` file under the directory.
-6. Enter Docker containers and direct to project folder.
-7. Execute the script with Python - `python extract_datetime.py`
-8. The script will keep fetching the available time slots for your appointment
-9. The notify alarm will be triggered if [desired date](#activate-notify-alarm) given was found.
+6. Execute the script with Python - `python extract_datetime.py`
+7. The script will keep fetching the available time slots for your appointment
+8. The notify alarm will be triggered if [desired date](#activate-notify-alarm) given was found.
 
 ## Activate Notify Alarm
 ### Set Date Filter
@@ -32,7 +31,7 @@ python extract_datetime.py -s 2024-01-28 -e 2024-02-05
 ```
 - For a single date: 
     - Set only the `start_date`
-    - *Or* set both dates to be the same
+    - **Or** set both dates to be the same
 - For a date range:
     - Set both `start_date` and `end_date`
 
