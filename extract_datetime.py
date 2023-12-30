@@ -21,23 +21,13 @@ class color:
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
-custom_cookies = {}
-custom_cookies['.ASPXAUTH'] = os.environ.get('ASPXAUTH', None)
-custom_cookies['ASP.NET_SessionId'] = os.environ.get('ASPNET_SessionId', None)
-custom_cookies['AWSALB'] = os.environ.get('AWSALB', None)
-custom_cookies['AWSALBCORS'] = custom_cookies['AWSALB']
-custom_cookies['VisaBookingType'] = 'AU'
-
-booking_url = "https://bmvs.onlineappointmentscheduling.net.au/oasis/AppointmentTime.aspx"
-
 # Target date (period)
 target_start_date = "2024-02-08"
 target_end_date = "2024-03-02"
 target_start_date = datetime.strptime(target_start_date, '%Y-%m-%d').date()
 target_end_date = datetime.strptime(target_end_date, '%Y-%m-%d').date()
 
-
-
+# Check available dates from fetched HTML content
 def check_available_dates(custom_cookies, booking_url):
     response = requests.get(url=booking_url, cookies=custom_cookies)
 
@@ -115,14 +105,25 @@ def extract_first_day_times(html_content):
 
     return am_time_list, pm_time_list
 
-# Main loop to perform recursive checking
+# Main loop to perform iterative checking
 def main():
+    booking_url = "https://bmvs.onlineappointmentscheduling.net.au/oasis/AppointmentTime.aspx"
+
+    # Collect cookies from env vars
+    custom_cookies = {}
+    custom_cookies['.ASPXAUTH'] = os.environ.get('ASPXAUTH', None)
+    custom_cookies['ASP.NET_SessionId'] = os.environ.get('ASPNET_SessionId', None)
+    custom_cookies['AWSALB'] = os.environ.get('AWSALB', None)
+    custom_cookies['AWSALBCORS'] = custom_cookies['AWSALB']
+    custom_cookies['VisaBookingType'] = 'AU'
+
+    # Iterative checking
     while True:
         global found
         found = False
 
         print("\n==================================\n")
-        print("Current Time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+        print("Current Time:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         check_available_dates(custom_cookies, booking_url)
         if found:
