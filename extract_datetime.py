@@ -154,6 +154,7 @@ if __name__ == "__main__":
             target_end_date = datetime.strptime(args.target_end_date, '%Y-%m-%d').date()
     except:
         print(color.RED + "Failed to parse given dates, please give dates in the format of \"YYYY-MM-DD\" and try again!" + color.END)
+        exit(1)
 
     # Execute main function
     main(target_start_date, target_end_date)
