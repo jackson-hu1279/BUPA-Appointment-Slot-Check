@@ -2,8 +2,9 @@ import os
 import itertools
 import re
 import random
-import time
 import requests
+import time
+from datetime import datetime
 from bs4 import BeautifulSoup
 from pydub import AudioSegment
 from pydub.playback import play
@@ -30,6 +31,13 @@ custom_cookies['VisaBookingType'] = 'AU'
 booking_url = "https://bmvs.onlineappointmentscheduling.net.au/oasis/AppointmentTime.aspx"
 found = False
 
+# Target date (period)
+target_start_date = "2024-02-08"
+target_end_date = "2024-03-02"
+target_start_date = datetime.strptime(target_start_date, '%Y-%m-%d').date()
+target_end_date = datetime.strptime(target_end_date, '%Y-%m-%d').date()
+
+
 
 def check_available_dates(custom_cookies, booking_url):
     response = requests.get(url=booking_url, cookies=custom_cookies)
@@ -46,7 +54,7 @@ def check_available_dates(custom_cookies, booking_url):
 
         # Extract time slots
         am_time_list, pm_time_list = extract_first_day_times(response.text)
-        print("\nAvailable Time Slots For: " + color.BOLD + date_lst[0] + color.END)
+        print("\nAvailable Time Slots For: " + color.BOLD + str(date_lst[0]) + color.END)
 
         # Print in two columns
         print('{:15s} {:s}'.format("Morning:", "Afternoon:"))
@@ -70,8 +78,26 @@ def get_formatted_date(date):
     current_month = month + 1
     if current_month < 10:
         current_month = '0' + str(current_month)
+
     date_str = f"{year}-{current_month}-{day}"
-    return date_str
+    formatted_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+    return formatted_date
+
+
+def date_condition_met(given_date, start_date, end_date=None):
+    # All input dates are in string format '%Y-%m-%d'
+
+    # Check exact date match
+    if not end_date:
+        return given_date == start_date
+    
+    # Check if date falls in given period
+    else:
+        given_date = datetime.strptime(given_date, '%Y-%m-%d').date()
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+
+        return start_date <= given_date <= end_date
 
 
 def extract_first_day_times(html_content):
