@@ -1,6 +1,7 @@
 import os
 import itertools
 import re
+import argparse
 import random
 import requests
 import time
@@ -21,11 +22,6 @@ class color:
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
-# Target date (period)
-target_start_date = "2024-02-08"
-target_end_date = "2024-03-02"
-target_start_date = datetime.strptime(target_start_date, '%Y-%m-%d').date()
-target_end_date = datetime.strptime(target_end_date, '%Y-%m-%d').date()
 
 # Check available dates from fetched HTML content
 def check_available_dates(custom_cookies, booking_url):
@@ -106,7 +102,7 @@ def extract_first_day_times(html_content):
     return am_time_list, pm_time_list
 
 # Main loop to perform iterative checking
-def main():
+def main(target_start_date, target_end_date):
     booking_url = "https://bmvs.onlineappointmentscheduling.net.au/oasis/AppointmentTime.aspx"
 
     # Collect cookies from env vars
@@ -142,4 +138,23 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Parse optional arguments for start and end dates if given
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--target_start_date", help="Target start date", type=str)
+    parser.add_argument("-e", "--target_end_date", help="Target end date", type=str)
+    args = parser.parse_args()
+
+    # Try to parse as datetime.date format
+    # Get target date (range)
+    target_start_date = target_end_date = None
+    try:
+        if args.target_start_date:
+            target_start_date = datetime.strptime(args.target_start_date, '%Y-%m-%d').date()
+        if args.target_end_date:
+            target_end_date = datetime.strptime(args.target_end_date, '%Y-%m-%d').date()
+    except:
+        print(color.RED + "Failed to parse given dates, please give dates in the format of \"YYYY-MM-DD\" and try again!" + color.END)
+        exit(1)
+
+    # Execute main function
+    main(target_start_date, target_end_date)
