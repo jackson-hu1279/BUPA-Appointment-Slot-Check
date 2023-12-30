@@ -118,7 +118,7 @@ def main():
     custom_cookies['VisaBookingType'] = 'AU'
 
     try:
-        assert not (None in custom_cookies.values())
+        assert None not in custom_cookies.values()
     except:
         print(color.RED + "Faild to read cookies from env vars!\n" \
               + "Please copy cookie value pairs into .env file and source it before use!" + color.END)
@@ -135,8 +135,7 @@ def main():
         # Check if found target date
         for available_date in available_date_lst:
             if date_condition_met(available_date, target_start_date, target_end_date):
-                song = AudioSegment.from_mp3("alarm.mp3")
-                play(song)
+                play(AudioSegment.from_mp3("alarm.mp3"))
                 break
             
         time.sleep(random.randint(5, 20))
