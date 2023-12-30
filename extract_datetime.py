@@ -30,10 +30,13 @@ target_end_date = datetime.strptime(target_end_date, '%Y-%m-%d').date()
 # Check available dates from fetched HTML content
 def check_available_dates(custom_cookies, booking_url):
     response = requests.get(url=booking_url, cookies=custom_cookies)
-
-    available_dates = re.search(r'var gAvailDates = \[(.*)\];', response.text).group(1)
-    date_lst = re.findall(r'new Date\((.*?)\)', available_dates)
-    date_lst = [get_formatted_date(x) for x in date_lst]
+    try:
+        available_dates = re.search(r'var gAvailDates = \[(.*)\];', response.text).group(1)
+        date_lst = re.findall(r'new Date\((.*?)\)', available_dates)
+        date_lst = [get_formatted_date(x) for x in date_lst]
+    except:
+        print(color.RED + "Failed to extract dates! Please ensure valid cookies are provided!" + color.END)
+        exit(1)
 
     # Find available dates
     if date_lst:
@@ -113,6 +116,13 @@ def main():
     custom_cookies['AWSALB'] = os.environ.get('AWSALB', None)
     custom_cookies['AWSALBCORS'] = custom_cookies['AWSALB']
     custom_cookies['VisaBookingType'] = 'AU'
+
+    try:
+        assert not (None in custom_cookies.values())
+    except:
+        print(color.RED + "Faild to read cookies from env vars!\n" \
+              + "Please copy cookie value pairs into .env file and source it before use!" + color.END)
+        exit(1)
 
     # Iterative checking
     while True:
