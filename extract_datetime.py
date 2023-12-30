@@ -41,11 +41,6 @@ def check_available_dates(custom_cookies, booking_url):
         for date in date_lst:
             print(date)
 
-            # Check if found target date
-            if date_condition_met(given_date=date, start_date=target_start_date, end_date=target_end_date):
-                global found
-                found = True
-
         # Extract time slots
         am_time_list, pm_time_list = extract_first_day_times(response.text)
         print("\nAvailable Time Slots For: " + color.BOLD + str(date_lst[0]) + color.END)
@@ -54,7 +49,9 @@ def check_available_dates(custom_cookies, booking_url):
         print('{:15s} {:s}'.format("Morning:", "Afternoon:"))
         for line in itertools.zip_longest(am_time_list, pm_time_list, fillvalue=' '):
             print('{:15s} {:s}'.format(line[0], line[1]))
-    
+
+        return date_lst
+
     # No available dates
     else:
         print("There are no available appointments at this time. \nPlease try another clinic or come back later.")
@@ -119,16 +116,19 @@ def main():
 
     # Iterative checking
     while True:
-        global found
-        found = False
-
         print("\n==================================\n")
         print("Current Time:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        check_available_dates(custom_cookies, booking_url)
-        if found:
-            song = AudioSegment.from_mp3("alarm.mp3")
-            play(song)
+        # Fetch available dates
+        available_date_lst = check_available_dates(custom_cookies, booking_url)
+        
+        # Check if found target date
+        for available_date in available_date_lst:
+            if date_condition_met(available_date, target_start_date, target_end_date):
+                song = AudioSegment.from_mp3("alarm.mp3")
+                play(song)
+                break
+            
         time.sleep(random.randint(5, 20))
 
 
