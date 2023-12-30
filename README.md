@@ -6,17 +6,17 @@ This project includes simple Python scripts used to automatically check [Bupa ap
     <br>Bupa Booking Page</br>
 </p>
 
-## How to Run
+## ⚙️ How to Run
 1. Have a working Python environment.
 2. Install `ffmpeg` and required packages in `requirements.txt`
-3. Try to make a new appointment on [Bupa](https://bmvs.onlineappointmentscheduling.net.au/oasis/) in your browser
+3. Try to make a new appointment on [Bupa](https://bmvs.onlineappointmentscheduling.net.au/oasis/) in your browser.
 4. Check cookies saved for the domain `bmvs.onlineappointmentscheduling.net.au`
 5. Save the cookies as key-value pairs into a `.env` file under the directory.
 6. Execute the script with Python - `python extract_datetime.py`
-7. The script will keep fetching the available time slots for your appointment
+7. The script will keep fetching the available time slots for your appointment.
 8. The notify alarm will be triggered if [desired date](#activate-notify-alarm) given was found.
 
-## Activate Notify Alarm
+## 🚨 Activate Notify Alarm
 ### Set Date Filter
 You can also set up a notify alarm if you only want to monitor available bookings for a specific date or within a date range. Simply add optional arguments for `start_date` and `end_date` with `-s` and `-e` flags respectively.
 ```shell
@@ -35,7 +35,7 @@ python extract_datetime.py -s 2024-01-28 -e 2024-02-05
 - For a date range:
     - Set both `start_date` and `end_date`
 
-## Error Messages
+## ❗ Error Messages
 1. Failed to read cookies.
     - Error message:
         ```
@@ -46,7 +46,7 @@ python extract_datetime.py -s 2024-01-28 -e 2024-02-05
 
         Check cookie value pairs are correctly saved in `.env` file and activated by `source .env`
         
-        ```
+        ```shell
         # Sample .env file
         export ASPXAUTH='xxxxx'
         export ASPNET_SessionId='xxxxx'
@@ -70,7 +70,7 @@ python extract_datetime.py -s 2024-01-28 -e 2024-02-05
     
         Your session may be expired, please get new cookies and try again.
 
-## Screenshots
+## 📷 Screenshots
 ### Expected Outputs
 
 Target Web Page            |  Script Output
