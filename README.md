@@ -38,26 +38,29 @@ python extract_datetime.py -s 2024-01-28 -e 2024-02-05
 ## Error Messages
 1. Failed to read cookies.
     - Error message:
-    ```
-    Faild to read cookies from env vars!
-    Please copy cookie value pairs into .env file and source it before use!
-    ```
+        ```
+        Faild to read cookies from env vars!
+        Please copy cookie value pairs into .env file and source it before use!
+        ```
     - Solution:
-    Check cookie value pairs are correctly saved in `.env` file and activated by `source .env`
+
+        Check cookie value pairs are correctly saved in `.env` file and activated by `source .env`
 2. Failed to parse dates.
     - Error message:
-    ```
-    Failed to parse given dates, please give dates in the format of "YYYY-MM-DD" and try again!
-    ```
+        ```
+        Failed to parse given dates, please give dates in the format of "YYYY-MM-DD" and try again!
+        ```
     - Solution:
-    Use correct date format when give optional arguments, check [examples](#set-date-filter) above.
+    
+        Use correct date format when give optional arguments, check [examples](#set-date-filter) above.
 3. Failed to extract dates.
     - Error message:
-    ```
-    Failed to extract dates! Please ensure valid cookies are provided!
-    ```
+        ```
+        Failed to extract dates! Please ensure valid cookies are provided!
+        ```
     - Solution:
-    Your session may be expired, please get new cookies and try again.
+    
+        Your session may be expired, please get new cookies and try again.
 
 ## Screenshots
 ### Expected Outputs
@@ -71,6 +74,13 @@ Multiple Dates             |  Limited Slots            |  No Available
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="docs/imgs/multiple dates.png" alt="Multiple Datese" width="200" />  |  <img src="docs/imgs/limited slots.png" alt="Limited Slots" width="200" /> |  <img src="docs/imgs/no available.png" alt="No Available" width="260" /> 
 
+### Error Messages
+<p align="center">
+    <img src="docs/imgs/error 1.png" alt="Bupa Booking Page" width="600" />
+    <img src="docs/imgs/error 2.png" alt="Bupa Booking Page" width="600" />
+    <img src="docs/imgs/error 3.png" alt="Bupa Booking Page" width="600" />
+</p>
+
 ### Case Demo
 - Date filter set to:
     - `start_date`: `"2024-01-05"`
@@ -78,6 +88,6 @@ Multiple Dates             |  Limited Slots            |  No Available
 - Alarm triggered when `"2024-01-05"` was found in available dates:
 
 <p align="center">
-    <img src="docs/imgs/case demo.png" alt="Case Demo" width="310" />
+    <img src="docs/imgs/case demo.png" alt="Case Demo" width="610" />
     <br>Alarm Triggered</br>
 </p>
