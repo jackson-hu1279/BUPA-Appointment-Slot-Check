@@ -29,7 +29,6 @@ custom_cookies['AWSALBCORS'] = custom_cookies['AWSALB']
 custom_cookies['VisaBookingType'] = 'AU'
 
 booking_url = "https://bmvs.onlineappointmentscheduling.net.au/oasis/AppointmentTime.aspx"
-found = False
 
 # Target date (period)
 target_start_date = "2024-02-08"
@@ -52,6 +51,11 @@ def check_available_dates(custom_cookies, booking_url):
         for date in date_lst:
             print(date)
 
+            # Check if found target date
+            if date_condition_met(given_date=date, start_date=target_start_date, end_date=target_end_date):
+                global found
+                found = True
+
         # Extract time slots
         am_time_list, pm_time_list = extract_first_day_times(response.text)
         print("\nAvailable Time Slots For: " + color.BOLD + str(date_lst[0]) + color.END)
@@ -65,15 +69,11 @@ def check_available_dates(custom_cookies, booking_url):
     else:
         print("There are no available appointments at this time. \nPlease try another clinic or come back later.")
 
+# Convert HTML date format to datetime.date format
 def get_formatted_date(date):
     day = int(date.split(',')[2])
     month = int(date.split(',')[1])
     year = int(date.split(',')[0])
-
-    # Simple date condition check
-    if 5 <= day <= 8 :
-        global found
-        found = True
 
     current_month = month + 1
     if current_month < 10:
@@ -83,23 +83,18 @@ def get_formatted_date(date):
     formatted_date = datetime.strptime(date_str, '%Y-%m-%d').date()
     return formatted_date
 
-
+# Check if given date satisfies conditions
 def date_condition_met(given_date, start_date, end_date=None):
-    # All input dates are in string format '%Y-%m-%d'
+    # All input dates are in datetime.date format
 
     # Check exact date match
     if not end_date:
         return given_date == start_date
-    
     # Check if date falls in given period
     else:
-        given_date = datetime.strptime(given_date, '%Y-%m-%d').date()
-        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-
         return start_date <= given_date <= end_date
 
-
+# Extract time slots for the first available date
 def extract_first_day_times(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     time_section = ['am', 'pm']
@@ -123,6 +118,9 @@ def extract_first_day_times(html_content):
 # Main loop to perform recursive checking
 def main():
     while True:
+        global found
+        found = False
+
         print("\n==================================\n")
         print("Current Time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 
